@@ -26,11 +26,12 @@ import (
 )
 
 const (
-	defaultSSHUser  = "docker"
-	defaultSSHPass  = "tcuser"
-	defaultDiskSize = 20000
-	defaultCPU      = 1
-	defaultMemory   = 1024
+	defaultSSHUser         = "docker"
+	defaultSSHPass         = "tcuser"
+	defaultDiskSize        = 20000
+	defaultCPU             = 1
+	defaultMemory          = 1024
+	defaultHardwareVersion = 10
 )
 
 // Config specifies the configuration of driver VMware
@@ -43,19 +44,21 @@ type Config struct {
 	ISO            string
 	Boot2DockerURL string
 
-	SSHPassword    string
-	ConfigDriveISO string
-	ConfigDriveURL string
-	NoShare        bool
+	SSHPassword     string
+	ConfigDriveISO  string
+	ConfigDriveURL  string
+	NoShare         bool
+	HardwareVersion int
 }
 
 // NewConfig creates a new Config
 func NewConfig(hostname, storePath string) *Config {
 	return &Config{
-		CPU:         defaultCPU,
-		Memory:      defaultMemory,
-		DiskSize:    defaultDiskSize,
-		SSHPassword: defaultSSHPass,
+		CPU:             defaultCPU,
+		Memory:          defaultMemory,
+		DiskSize:        defaultDiskSize,
+		SSHPassword:     defaultSSHPass,
+		HardwareVersion: defaultHardwareVersion,
 		BaseDriver: &drivers.BaseDriver{
 			SSHUser:     defaultSSHUser,
 			MachineName: hostname,
@@ -114,6 +117,12 @@ func (c *Config) GetCreateFlags() []mcnflag.Flag {
 			EnvVar: "VMWARE_NO_SHARE",
 			Name:   "vmware-no-share",
 			Usage:  "Disable the mount of your home directory",
+		},
+		mcnflag.IntFlag{
+			EnvVar: "VMWARE_HARDWARE_VERSION",
+			Name:   "vmware-hardware-version",
+			Usage:  "Set the Fusion virtual hardware version.",
+			Value:  defaultHardwareVersion,
 		},
 	}
 }

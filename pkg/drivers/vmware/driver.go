@@ -89,6 +89,7 @@ func (d *Driver) SetConfigFromFlags(flags drivers.DriverOptions) error {
 	d.SSHPassword = flags.String("vmware-ssh-password")
 	d.SSHPort = 22
 	d.NoShare = flags.Bool("vmware-no-share")
+	d.HardwareVersion = flags.Int("vmware-hardware-version")
 
 	// We support a maximum of 16 cpu to be consistent with Virtual Hardware 10
 	// specs.
